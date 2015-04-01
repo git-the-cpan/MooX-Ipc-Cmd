@@ -1,0 +1,41 @@
+---
+abstract: 'Moo role for issuing commands, with debug support, and signal handling'
+author:
+  - 'Eddie Ash <eddie+cpan@ashfamily.net>'
+build_requires:
+  File::Spec: '0'
+  IO::Handle: '0'
+  IPC::Open3: '0'
+  List::Util: '0'
+  Log::Any::Adapter: '0'
+  Test::More: '0'
+  perl: '5.006'
+  strict: '0'
+  warnings: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 5.031, CPAN::Meta::Converter version 2.143240'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: MooX-Ipc-Cmd
+requires:
+  IPC::Run3: '0'
+  Moo: '0'
+  Moo::Role: '0'
+  MooX::Log::Any: '0'
+  MooX::Options: '0'
+  POSIX: '0'
+  Throwable::Error: '0'
+  Type::Params: '0'
+  Types::Standard: '0'
+  constant: '0'
+  feature: '0'
+  overload: '0'
+resources:
+  bugtracker: https://github.com/cazador481/MooX-Ipc-Cmd/issues
+  homepage: https://github.com/cazador481/MooX-Ipc-Cmd
+  repository: https://github.com/cazador481/MooX-Ipc-Cmd.git
+version: 1.0.0
