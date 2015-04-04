@@ -292,7 +292,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.0.0
+version 1.0.1
 
 =head1 METHODS
 

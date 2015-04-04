@@ -6,7 +6,7 @@ build_requires:
   File::Spec: '0'
   IO::Handle: '0'
   IPC::Open3: '0'
-  List::Util: '0'
+  List::Util: '1.33'
   Log::Any::Adapter: '0'
   Test::More: '0'
   perl: '5.006'
@@ -15,7 +15,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: '0'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.031, CPAN::Meta::Converter version 2.143240'
+generated_by: 'Dist::Zilla version 5.034, CPAN::Meta::Converter version 2.143240'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,6 +23,7 @@ meta-spec:
 name: MooX-Ipc-Cmd
 requires:
   IPC::Run3: '0'
+  List::Util: '1.33'
   Moo: '0'
   Moo::Role: '0'
   MooX::Log::Any: '0'
@@ -38,4 +39,4 @@ resources:
   bugtracker: https://github.com/cazador481/MooX-Ipc-Cmd/issues
   homepage: https://github.com/cazador481/MooX-Ipc-Cmd
   repository: https://github.com/cazador481/MooX-Ipc-Cmd.git
-version: 1.0.0
+version: 1.0.1

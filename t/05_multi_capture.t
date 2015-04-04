@@ -61,7 +61,7 @@ eval {
         $no_output = $test->_capture([NO_SUCH_CMD,1]);
 };
 
-like($@->stderr,qr/No such file/, "failed capture");
+is($@->exit_status,-1, "failed capture");
 is($no_output,undef, "No output from failed command");
 
 # Running Perl -v

@@ -54,7 +54,7 @@ eval {
 	$no_output = $test->_capture([NO_SUCH_CMD]);
 };
 
-like($@->stderr,qr/No such file or directory/, "failed capture");
+is($@->exit_status,-1, "failed capture");
 is($no_output,undef, "No output from failed command");
 
 # The following is to try and catch weird buffering issues
