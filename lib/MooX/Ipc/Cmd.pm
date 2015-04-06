@@ -1,7 +1,6 @@
 #ABSTRACT: Moo role for issuing commands, with debug support, and signal handling
 
-#pod =SYNOPSIS
-#pod
+#pod =head1 SYNOPSIS
 #pod
 #pod This role provides the ability to capture system calls, and to execute system calls.
 #pod
@@ -11,7 +10,7 @@
 #pod * debug switch
 #pod * Prints output in realtime, in debug mode
 #pod * Handles signals, and kills via signal if configured too.
-#pod * Uses Log::Any for logging
+#pod * Uses Log::Any for logging.  If in debug mode, will log output of commands, execution line
 #pod * Command line option
 #pod
 #pod     package Moo_Package;
@@ -62,7 +61,7 @@ has _cmd_signal_from_number => (
                                );
 
 
-#pod =attrib _cmd_kill
+#pod =attribute _cmd_kill
 #pod
 #pod If set to 1 will send the propgate signal when cmd exits due to signal.
 #pod
@@ -78,7 +77,7 @@ has _cmd_kill => (
                   documentation => 'If set to 1 will send the propogate signal when cmd exits due to signal.'
                  );
 
-#pod =attrib mock
+#pod =attribute mock
 #pod
 #pod Mocks the cmd, does not run
 #pod
@@ -292,34 +291,9 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.0.1
+version 1.0.2
 
-=head1 METHODS
-
-=head2 _system(\@cmd', /%opts);
-
-Runs a command like system call, with the output silently dropped, unless debug is on
-
-=over 4
-
-=item Params:
-
- $cmd : arrayref of the command to send to the shell
-
-=item Returns:
-
-exit code
-
-=item Exception
-
-Throws an error when case dies, will also log error using log::any category _cmd
-
-=back
-
-=head2 _capture(\@cmd',\%opts);
-Runs a command like qx call.  Will display cmd executed = item Params :
-
-=SYNOPSIS
+=head1 SYNOPSIS
 
 This role provides the ability to capture system calls, and to execute system calls.
 
@@ -341,7 +315,7 @@ Handles signals, and kills via signal if configured too.
 
 =item *
 
-Uses Log::Any for logging
+Uses Log::Any for logging.  If in debug mode, will log output of commands, execution line
 
 =item *
 
@@ -368,7 +342,9 @@ Command line option
     my $app=Moo_Package->new(debug=>0,_cmd_kill=>0); #no command line processing
     1;
 
-=attrib _cmd_kill
+=head1 ATTRIBUTES
+
+=head2 _cmd_kill
 
 If set to 1 will send the propgate signal when cmd exits due to signal.
 
@@ -376,7 +352,7 @@ Reader: _cmd_kill
 
 Default: 1
 
-=attrib mock
+=head2 mock
 
 Mocks the cmd, does not run
 
@@ -385,6 +361,31 @@ Reader: mock
 Default: 0
 
 Command line option, via MooX::Options
+
+=head1 METHODS
+
+=head2 _system(\@cmd', /%opts);
+
+Runs a command like system call, with the output silently dropped, unless debug is on
+
+=over 4
+
+=item Params:
+
+ $cmd : arrayref of the command to send to the shell
+
+=item Returns:
+
+exit code
+
+=item Exception
+
+Throws an error when case dies, will also log error using log::any category _cmd
+
+=back
+
+=head2 _capture(\@cmd',\%opts);
+Runs a command like qx call.  Will display cmd executed = item Params :
 
 =head1 AUTHOR
 

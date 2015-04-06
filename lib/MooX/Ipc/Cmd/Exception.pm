@@ -1,7 +1,7 @@
 #ABSTRACT: Exception class for MooX::Ipc::Cmd role
 package MooX::Ipc::Cmd::Exception;
 use Moo;
-our $VERSION = '1.0.1'; #VERSION
+our $VERSION = '1.0.2'; #VERSION
 extends 'Throwable::Error';
 has 'stderr'      => (is => 'ro', predicate => 1,);
 has 'cmd'         => (is => 'ro', required  => 1,);
@@ -49,7 +49,7 @@ MooX::Ipc::Cmd::Exception - Exception class for MooX::Ipc::Cmd role
 
 =head1 VERSION
 
-version 1.0.1
+version 1.0.2
 
 =head1 AUTHOR
 
