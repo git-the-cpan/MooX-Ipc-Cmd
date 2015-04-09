@@ -38,11 +38,12 @@ my %WriteMakefileArgs = (
     "IPC::Open3" => 0,
     "List::Util" => "1.33",
     "Log::Any::Adapter" => 0,
+    "Test::Exception" => 0,
     "Test::More" => 0,
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "1.0.2",
+  "VERSION" => "1.0.3",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -62,6 +63,7 @@ my %FallbackPrereqs = (
   "MooX::Log::Any" => 0,
   "MooX::Options" => 0,
   "POSIX" => 0,
+  "Test::Exception" => 0,
   "Test::More" => 0,
   "Throwable::Error" => 0,
   "Type::Params" => 0,

@@ -43,6 +43,7 @@
             "IPC::Open3" : "0",
             "List::Util" : "1.33",
             "Log::Any::Adapter" : "0",
+            "Test::Exception" : "0",
             "Test::More" : "0",
             "perl" : "5.006",
             "strict" : "0",
@@ -62,6 +63,6 @@
          "web" : "https://github.com/cazador481/MooX-Ipc-Cmd"
       }
    },
-   "version" : "1.0.2"
+   "version" : "1.0.3"
 }
 

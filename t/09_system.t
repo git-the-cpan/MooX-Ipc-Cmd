@@ -1,7 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
-use Test::More tests => 24;
+use Test::More tests => 26;
 use Config;
+use Test::Exception;
 package test;
 use Moo;
 use MooX::Options;
@@ -50,4 +51,9 @@ foreach my $exit (1..5,250..255) {
 
 	is($@->exit_status, $exit,"Single-arg system fail, exit $exit" );
 }
+
+dies_ok(sub {$test->_system(['adsfadsf/adsfasfd'])}, 'Non existing file');
+
+is ($@->exit_status,-1,'Non existing exit status');
+
 1;

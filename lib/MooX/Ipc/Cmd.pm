@@ -242,7 +242,7 @@ sub _check_error
         my $opt = {
                    cmd         => $cmd,
                    exit_status => $child_error,
-                   stderr      => $!,
+                   stderr      => [$!],
                   };
         $opt->{stderr} = $stderr if (defined $stderr);
         MooX::Ipc::Cmd::Exception->throw($opt);
@@ -291,7 +291,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.0.2
+version 1.0.3
 
 =head1 SYNOPSIS
 

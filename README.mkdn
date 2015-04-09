@@ -4,7 +4,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 # VERSION
 
-version 1.0.2
+version 1.0.3
 
 # SYNOPSIS
 
