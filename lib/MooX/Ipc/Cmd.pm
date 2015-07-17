@@ -38,16 +38,16 @@ package MooX::Ipc::Cmd;
 use Moo::Role;
 use MooX::Options;
 use Config qw();
-use Types::Standard qw(Object ArrayRef Str);
+use Types::Standard qw(Optional Dict slurpy Object ArrayRef Str);
 use Type::Params qw(compile);
 
 # use List::Util qw(any);
 use POSIX qw(WIFEXITED WEXITSTATUS WIFSIGNALED WTERMSIG);
-use MooX::Log::Any;
 with('MooX::Log::Any');
 use feature qw(state);
 use IPC::Run3;
 use MooX::Ipc::Cmd::Exception;
+use List::Util 1.33;
 
 # use namespace::clean -except=> [qw/_options_data _options_config/];
 
@@ -103,6 +103,10 @@ option mock => (
 #pod =for :list
 #pod = Params:
 #pod  $cmd : arrayref of the command to send to the shell
+#pod = %opts
+#pod  valid_exit => [0] - exits to not throw exception, defaults to 0
+#pod  
+#pod =for :list 
 #pod = Returns:
 #pod exit code
 #pod = Exception
@@ -112,13 +116,13 @@ option mock => (
 
 sub _system
 {
-    state $check= compile(Object, ArrayRef [Str]);
-    my ($self, $cmd) = $check->(@_);
+    state $check= compile(Object, ArrayRef [Str], slurpy Dict [valid_exit=>Optional[ArrayRef]]);
+    my ($self, $cmd,$opt) = $check->(@_);
 
     $self->logger('_cmd')->debug('Executing ' . join(' ', @$cmd));
     return 0 if ($self->mock);
 
-    my $stderr;
+    my $stderr=[];
 
     if (scalar @{$cmd} == 1)
     {
@@ -138,36 +142,41 @@ sub _system
     }
 
     my $error = $?;
-    $self->_check_error($error, $cmd, $stderr);
+    $self->_check_error($error, $cmd, $stderr,$opt);
     return $error;
 }
 # =for :list
 # * $cmd : arrayref of the command to send to the shell
 #
-# =item Returns:
-#
-# combined stderr stdout
-#
-# =item Exception
-#
-# Throws an error when case dies, will also log error using log::any category _cmd
-#
-#  
+  
 #pod =method _capture(\@cmd',\%opts);
-#pod Runs a command like qx call.  Will display cmd executed = item Params :
+#pod Runs a command like qx call.  Will display cmd executed 
+#pod
+#pod =for list:
+#pod =  Params :
+#pod  $cmd : arrayref of the command to send to the shell
+#pod = %opts
+#pod  valid_exit => [0] - exits to not throw exception, defaults to 0
+#pod
+#pod =for list:
+#pod =Returns:
+#pod combined stderr stdout
+#pod =Exception
+#pod Throws an error when case dies, will also log error using log::any category _cmd
+#pod
 #pod
 #pod =cut
 
 sub _capture
 {
-    state $check= compile(Object, ArrayRef [Str]);
-    my ($self, $cmd) = $check->(@_);
+    state $check= compile(Object, ArrayRef [Str],slurpy Dict [valid_exit=>Optional[ArrayRef]]);
+    my ($self, $cmd,$opt) = $check->(@_);
     $self->logger('_cmd')->debug('Executing ' . join(' ', @$cmd));
 
     return 0 if ($self->mock);
 
     my $output = [];
-    my $stderr;
+    my $stderr = [];
     if (scalar @$cmd == 1)
     {
         run3($cmd->[0], \undef,
@@ -185,7 +194,8 @@ sub _capture
     }
     my $exit_status = $?;
 
-    $self->_check_error($exit_status, $cmd, $stderr);
+        $self->_check_error($exit_status, $cmd, $stderr) unless 
+    (defined $opt->{valid_exit} && $opt->{valid_exit}==1);
     if (defined $output)
     {
         if (wantarray)
@@ -222,9 +232,9 @@ sub _cmd_stderr
     my $line   = $_;      # output from cmd
 
     return if ($line =~ / Batch system concurrent query limit exceeded/);    # ignores lfs spew
-    push(@$stderr, $line);
     push(@$output, $line) if (defined $output);
     chomp $line;
+    push(@$stderr, $line);
     if ($self->logger('_cmd')->is_debug)
     {
         $self->logger('_cmd')->debug($line);
@@ -235,7 +245,11 @@ sub _cmd_stderr
 sub _check_error
 {
     my $self = shift;
-    my ($child_error, $cmd, $stderr) = @_;
+    my ($child_error, $cmd, $stderr,$opt) = @_;
+    if (! exists $opt->{valid_exit})
+    {
+        $opt->{valid_exit}=[0];
+    }
 
     if ($child_error == -1)
     {
@@ -267,7 +281,7 @@ sub _check_error
         $opt->{stderr} = $stderr if (defined $stderr);
         MooX::Ipc::Cmd::Exception->throw($opt);
     }
-    elsif ($child_error != 0)
+    elsif (!List::Util::any {$_ eq $child_error} @{$opt->{valid_exit}})
     {
         my $opt = {
                    cmd         => $cmd,
@@ -291,7 +305,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.0.3
+version 1.1.0
 
 =head1 SYNOPSIS
 
@@ -374,6 +388,14 @@ Runs a command like system call, with the output silently dropped, unless debug 
 
  $cmd : arrayref of the command to send to the shell
 
+=item %opts
+
+ valid_exit => [0] - exits to not throw exception, defaults to 0
+
+=back
+
+=over 4
+
 =item Returns:
 
 exit code
@@ -385,7 +407,17 @@ Throws an error when case dies, will also log error using log::any category _cmd
 =back
 
 =head2 _capture(\@cmd',\%opts);
-Runs a command like qx call.  Will display cmd executed = item Params :
+Runs a command like qx call.  Will display cmd executed 
+
+=for list: =  Params :
+ $cmd : arrayref of the command to send to the shell
+= %opts
+ valid_exit => [0] - exits to not throw exception, defaults to 0
+
+=for list: =Returns:
+combined stderr stdout
+=Exception
+Throws an error when case dies, will also log error using log::any category _cmd
 
 =head1 AUTHOR
 

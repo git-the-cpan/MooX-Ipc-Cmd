@@ -4,7 +4,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 # VERSION
 
-version 1.0.3
+version 1.1.0
 
 # SYNOPSIS
 
@@ -67,6 +67,10 @@ Runs a command like system call, with the output silently dropped, unless debug 
 
         $cmd : arrayref of the command to send to the shell
 
+- %opts
+
+        valid_exit => [0] - exits to not throw exception, defaults to 0
+
 - Returns:
 
     exit code
@@ -76,7 +80,7 @@ Runs a command like system call, with the output silently dropped, unless debug 
     Throws an error when case dies, will also log error using log::any category \_cmd
 
 ## \_capture(\\@cmd',\\%opts);
-Runs a command like qx call.  Will display cmd executed = item Params :
+Runs a command like qx call.  Will display cmd executed 
 
 # AUTHOR
 

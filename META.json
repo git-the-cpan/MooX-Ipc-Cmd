@@ -4,7 +4,7 @@
       "Eddie Ash <eddie+cpan@ashfamily.net>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.034, CPAN::Meta::Converter version 2.143240",
+   "generated_by" : "Dist::Zilla version 5.036, CPAN::Meta::Converter version 2.150001",
    "license" : [
       "perl_5"
    ],
@@ -41,7 +41,6 @@
             "File::Spec" : "0",
             "IO::Handle" : "0",
             "IPC::Open3" : "0",
-            "List::Util" : "1.33",
             "Log::Any::Adapter" : "0",
             "Test::Exception" : "0",
             "Test::More" : "0",
@@ -63,6 +62,6 @@
          "web" : "https://github.com/cazador481/MooX-Ipc-Cmd"
       }
    },
-   "version" : "1.0.3"
+   "version" : "1.1.0"
 }
 

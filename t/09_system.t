@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-use Test::More tests => 26;
+use Test::More tests => 27;
 use Config;
 use Test::Exception;
 package test;
@@ -54,6 +54,9 @@ foreach my $exit (1..5,250..255) {
 
 dies_ok(sub {$test->_system(['adsfadsf/adsfasfd'])}, 'Non existing file');
 
+
 is ($@->exit_status,-1,'Non existing exit status');
+
+throws_ok{$test->_system(['stderr_output.pl 1'])} qr/  Hello\n  Goodbye\n/m,'Captures stderr';
 
 1;
