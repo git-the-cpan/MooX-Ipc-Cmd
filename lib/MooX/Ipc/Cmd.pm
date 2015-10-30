@@ -99,7 +99,6 @@ option mock => (
 #pod
 #pod Runs a command like system call, with the output silently dropped, unless debug is on
 #pod
-#pod
 #pod =for :list
 #pod = Params:
 #pod  $cmd : arrayref of the command to send to the shell
@@ -145,10 +144,7 @@ sub _system
     $self->_check_error($error, $cmd, $stderr,$opt);
     return $error;
 }
-# =for :list
-# * $cmd : arrayref of the command to send to the shell
-#
-  
+
 #pod =method _capture(\@cmd',\%opts);
 #pod Runs a command like qx call.  Will display cmd executed 
 #pod
@@ -305,7 +301,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.1.0
+version 1.1.1
 
 =head1 SYNOPSIS
 
