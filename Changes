@@ -1,5 +1,9 @@
 Revision history for MooX-Ipc-Cmd
 
+1.1.2 2015-11-05T08:43:23-08:00 America/Los_Angeles
+ [DOCUMENTATION]
+ - -Removed reference to debug mode, better documentation
+
 1.1.1 2015-10-30T07:11:05-07:00 America/Los_Angeles
  [BUG FIXES]
  - Fix failures in non linux builds

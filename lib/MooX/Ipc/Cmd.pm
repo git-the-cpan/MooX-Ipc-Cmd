@@ -7,10 +7,9 @@
 #pod Features
 #pod
 #pod =for :list
-#pod * debug switch
 #pod * Prints output in realtime, in debug mode
 #pod * Handles signals, and kills via signal if configured too.
-#pod * Uses Log::Any for logging.  If in debug mode, will log output of commands, execution line
+#pod * Uses Log::Any for logging.  If in debug mode, will log output of commands, and execution line
 #pod * Command line option
 #pod
 #pod     package Moo_Package;
@@ -28,8 +27,8 @@
 #pod
 #pod     package main
 #pod     use Log::Any::Adapter('Stdout');  #setup Log::Any::Adapter;
-#pod     my $app=Moo_Package->new_with_options(debug=>0,_cmd_kill=>0); #command line processing
-#pod     my $app=Moo_Package->new(debug=>0,_cmd_kill=>0); #no command line processing
+#pod     my $app=Moo_Package->new_with_options(_cmd_kill=>0); #command line processing
+#pod     my $app=Moo_Package->new(_cmd_kill=>0); #no command line processing
 #pod     1;
 #pod
 #pod =cut
@@ -97,15 +96,13 @@ option mock => (
 
 #pod =method _system(\@cmd', /%opts);
 #pod
-#pod Runs a command like system call, with the output silently dropped, unless debug is on
+#pod Runs a command like system call, with the output silently dropped, unless in log::any debug level
 #pod
 #pod =for :list
 #pod = Params:
 #pod  $cmd : arrayref of the command to send to the shell
-#pod = %opts
-#pod  valid_exit => [0] - exits to not throw exception, defaults to 0
-#pod  
-#pod =for :list 
+#pod  %opts
+#pod    valid_exit => [0] - exits to not throw exception, defaults to 0
 #pod = Returns:
 #pod exit code
 #pod = Exception
@@ -146,20 +143,22 @@ sub _system
 }
 
 #pod =method _capture(\@cmd',\%opts);
+#pod
 #pod Runs a command like qx call.  Will display cmd executed 
 #pod
-#pod =for list:
-#pod =  Params :
-#pod  $cmd : arrayref of the command to send to the shell
-#pod = %opts
-#pod  valid_exit => [0] - exits to not throw exception, defaults to 0
+#pod =begin :list
 #pod
-#pod =for list:
-#pod =Returns:
+#pod = Params:
+#pod  $cmd: arrayref of the command to send to the shell
+#pod  %opts:
+#pod     valid_exit => [0] - exits to not throw exception, defaults to 0
+#pod
+#pod = Returns:
 #pod combined stderr stdout
-#pod =Exception
-#pod Throws an error when case dies, will also log error using log::any category _cmd
+#pod = Exception
+#pod Throws an MooX::Ipc::Cmd::Exception error
 #pod
+#pod =end :list
 #pod
 #pod =cut
 
@@ -301,7 +300,7 @@ MooX::Ipc::Cmd - Moo role for issuing commands, with debug support, and signal h
 
 =head1 VERSION
 
-version 1.1.1
+version 1.1.2
 
 =head1 SYNOPSIS
 
@@ -313,10 +312,6 @@ Features
 
 =item *
 
-debug switch
-
-=item *
-
 Prints output in realtime, in debug mode
 
 =item *
@@ -325,7 +320,7 @@ Handles signals, and kills via signal if configured too.
 
 =item *
 
-Uses Log::Any for logging.  If in debug mode, will log output of commands, execution line
+Uses Log::Any for logging.  If in debug mode, will log output of commands, and execution line
 
 =item *
 
@@ -348,8 +343,8 @@ Command line option
 
     package main
     use Log::Any::Adapter('Stdout');  #setup Log::Any::Adapter;
-    my $app=Moo_Package->new_with_options(debug=>0,_cmd_kill=>0); #command line processing
-    my $app=Moo_Package->new(debug=>0,_cmd_kill=>0); #no command line processing
+    my $app=Moo_Package->new_with_options(_cmd_kill=>0); #command line processing
+    my $app=Moo_Package->new(_cmd_kill=>0); #no command line processing
     1;
 
 =head1 ATTRIBUTES
@@ -376,21 +371,15 @@ Command line option, via MooX::Options
 
 =head2 _system(\@cmd', /%opts);
 
-Runs a command like system call, with the output silently dropped, unless debug is on
+Runs a command like system call, with the output silently dropped, unless in log::any debug level
 
 =over 4
 
 =item Params:
 
  $cmd : arrayref of the command to send to the shell
-
-=item %opts
-
- valid_exit => [0] - exits to not throw exception, defaults to 0
-
-=back
-
-=over 4
+ %opts
+   valid_exit => [0] - exits to not throw exception, defaults to 0
 
 =item Returns:
 
@@ -403,17 +392,26 @@ Throws an error when case dies, will also log error using log::any category _cmd
 =back
 
 =head2 _capture(\@cmd',\%opts);
+
 Runs a command like qx call.  Will display cmd executed 
 
-=for list: =  Params :
- $cmd : arrayref of the command to send to the shell
-= %opts
- valid_exit => [0] - exits to not throw exception, defaults to 0
+=over 4
 
-=for list: =Returns:
+=item Params:
+
+ $cmd: arrayref of the command to send to the shell
+ %opts:
+    valid_exit => [0] - exits to not throw exception, defaults to 0
+
+=item Returns:
+
 combined stderr stdout
-=Exception
-Throws an error when case dies, will also log error using log::any category _cmd
+
+=item Exception
+
+Throws an MooX::Ipc::Cmd::Exception error
+
+=back
 
 =head1 AUTHOR
 
